@@ -3,13 +3,12 @@ package edu.library.libraryservice.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class BookDetailsDto {
     @JsonIgnore
-    private long bookId;
+    private long id;
     @NotBlank
     @NotEmpty(message = "Author cannot be empty")
     private String author;

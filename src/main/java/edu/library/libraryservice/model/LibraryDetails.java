@@ -16,11 +16,19 @@ public class LibraryDetails {
     private Long id;
 
     private String userId;
-    private String bookId;
+    @ManyToOne
+    private BookDetails book;
 
     @CreationTimestamp
     private LocalDateTime issuedDate;
 
+    private LocalDateTime dueDate;
+
     private boolean isReturned = false;
+
+    @PrePersist
+    public void setDueDate() {
+        this.dueDate = this.issuedDate.plusDays(14);
+    }
 
 }

@@ -5,17 +5,24 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private final String SECRET_KEY = "your-256-bit-secret-your-256-bit-secret";  // Change this to a strong secret key
-    private final long EXPIRATION_TIME = 86400000; // 1 day in milliseconds
+    private final String SECRET_KEY = generateSecretKey();
+    private final long EXPIRATION_TIME = 86400000;
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
+    private String generateSecretKey() {
+        byte[] key = new byte[32]; // 256-bit key
+        new SecureRandom().nextBytes(key);
+        return Base64.getEncoder().encodeToString(key);
+    }
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)

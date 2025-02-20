@@ -2,6 +2,8 @@ package edu.library.libraryservice.service;
 
 import edu.library.libraryservice.business.LibraryBusiness;
 import edu.library.libraryservice.dto.BookDetailsDto;
+import edu.library.libraryservice.dto.UserDto;
+import edu.library.libraryservice.exception.LimitExceedException;
 import edu.library.libraryservice.mapper.BookDetailsMapper;
 import edu.library.libraryservice.mapper.LibraryDetailsMapper;
 import edu.library.libraryservice.model.BookDetails;
@@ -30,20 +32,31 @@ public class LibraryServiceImpl implements LibraryService {
 
 
     @Override
-    public BookDetails saveDetails(BookDetailsDto details) {
-        return libraryBusiness.saveBookDetails(bookDetailsMapper.toEntity(details));
-    }
-    @Override
-    public LibraryDetails issueBook(String userId,String bookId) throws Exception {
-        bookValidation.validateBookExist(bookId);
-        userService.getUser(userId);
-        bookValidation.validateUserBookLimit(userId,bookId);
-        return libraryBusiness.details(libraryDetailsMapper.toEntity(userId,bookId));
+    public BookDetailsDto saveDetails(BookDetailsDto details) {
+        BookDetails dto = libraryBusiness.saveBookDetails(bookDetailsMapper.toEntity(details));
+        return bookDetailsMapper.toDto(dto);
     }
 
     @Override
-    public List<BookDetailsDto> getAllBooks()  {
+    public LibraryDetails issueBook(String userId, String bookId) throws Exception {
+        UserDto user = userService.getUser(userId);
+        LibraryDetails libraryDetails = null;
+        if (user != null) {
+            BookDetails book = bookValidation.bookExistOrNot(bookId);
+            bookValidation.validateUserBookLimit(user.getUserId(), String.valueOf(book.getId()));
+            libraryDetails = libraryBusiness.details(libraryDetailsMapper.toEntity(userId,book));
+        }
+        return libraryDetails;
+    }
+
+    @Override
+    public List<BookDetailsDto> getAllBooks() {
         List<BookDetails> books = libraryBusiness.getAllBooks();
         return bookDetailsMapper.toDtoList(books);
+    }
+
+    @Override
+    public UserDto userLogin(String userId, String password) {
+        return userService.userLogin(userId, password);
     }
 }

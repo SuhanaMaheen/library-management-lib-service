@@ -11,7 +11,7 @@ import java.util.List;
 public class BookDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long bookId;
+    private Long id;
     private String author;
     private String title;
     private String category;

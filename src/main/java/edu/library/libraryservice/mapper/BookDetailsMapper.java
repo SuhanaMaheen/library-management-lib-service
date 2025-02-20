@@ -22,12 +22,13 @@ public class BookDetailsMapper {
         entity.setDescription(dto.getDescription());
         return entity;
     }
+
     public List<BookDetailsDto> toDtoList(List<BookDetails> entity) {
         if (entity == null) {
             return null;
         }
         List<BookDetailsDto> dtoList = new ArrayList<BookDetailsDto>();
-        for(BookDetails book : entity) {
+        for (BookDetails book : entity) {
             BookDetailsDto dto = new BookDetailsDto();
             dto.setAuthor(book.getAuthor());
             dto.setTitle(book.getTitle());
@@ -36,6 +37,19 @@ public class BookDetailsMapper {
             dtoList.add(dto);
         }
         return dtoList;
+    }
+
+    public BookDetailsDto toDto(BookDetails entity) {
+        if (entity == null) {
+            return null;
+        }
+        BookDetailsDto dto = new BookDetailsDto();
+        dto.setAuthor(entity.getAuthor());
+        dto.setTitle(entity.getTitle());
+        dto.setCategory(entity.getCategory());
+        dto.setDescription(entity.getDescription());
+
+        return dto;
     }
 
 

@@ -1,6 +1,5 @@
 package edu.library.libraryservice.business;
 
-import edu.library.libraryservice.dto.BookDetailsDto;
 import edu.library.libraryservice.model.BookDetails;
 import edu.library.libraryservice.model.LibraryDetails;
 import edu.library.libraryservice.repository.BookDetailsRepository;
